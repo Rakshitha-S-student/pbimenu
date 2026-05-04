@@ -4,149 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Finance Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* ===== Design Tokens ===== */
-:root {
-  --color-primary-brown: #3C2415;
-  --color-primary-dark: #2A1A0E;
-  --color-gold: #C5A55A;
-  --color-gold-light: #D4BA7A;
-  --color-gold-dark: #A8893E;
-  --color-cream: #F5F0E8;
-  --color-cream-light: #FAF7F2;
-  --color-white: #FFFFFF;
-  --color-body-text: #4A3728;
-  --color-text-light: #8B7A6B;
-  --color-border: rgba(60,36,21,0.1);
-  --color-card-shadow: rgba(60,36,21,0.08);
-  --color-overlay-active: rgba(245,240,232,0.88);
-  --font-family: 'Poppins', sans-serif;
-  --transition-speed: 0.6s;
-  --transition-ease: cubic-bezier(0.4,0,0.2,1);
-  --header-height: 70px;
-  --collapsed-width: 100px;
-}
-*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-html,body { height:100%; overflow:hidden; font-family:var(--font-family); background:var(--color-cream); color:var(--color-body-text); }
 
-/* ===== Header ===== */
-.header { position:fixed; top:0; left:0; right:0; height:var(--header-height); background:#31261d; display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; box-shadow:0 2px 20px rgba(0,0,0,0.15); }
-.header-left { display:flex; align-items:center; gap:16px; }
-.header-logo { height:42px; width:auto; }
-.header-title { font-size:22px; font-weight:400; color:#DDD; letter-spacing:0.2px; margin-left:25px; }
-.header-title span { font-weight:300; color:#999; }
+<!-- EXACT ORIGINAL CSS — unchanged -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bhavinks84/PBIMenu@main/styles.css">
 
-/* ===== Search ===== */
-.search-container { position:relative; width:320px; }
-.search-input { width:100%; padding:10px 16px 10px 44px; border:1.5px solid rgba(255,255,255,0.15); border-radius:12px; background:rgba(255,255,255,0.08); font-family:var(--font-family); font-size:14px; color:#EEE; outline:none; transition:all 0.3s ease; }
-.search-input::placeholder { color:#999; }
-.search-input:focus { border-color:var(--color-gold); background:rgba(255,255,255,0.12); box-shadow:0 0 0 3px rgba(197,165,90,0.15); }
-.search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#999; font-size:18px; pointer-events:none; }
-.search-clear { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:#999; cursor:pointer; font-size:16px; display:none; padding:4px; border-radius:50%; transition:all 0.2s; }
-.search-clear:hover { background:rgba(255,255,255,0.1); color:#EEE; }
-.search-clear.visible { display:flex; }
-
-/* ===== Accordion ===== */
-.accordion-container { display:flex; height:calc(100vh - var(--header-height)); margin-top:var(--header-height); overflow:hidden; }
-.accordion-section { position:relative; flex:0 0 var(--collapsed-width); height:100%; overflow:hidden; cursor:pointer; transition:flex var(--transition-speed) var(--transition-ease); }
-.accordion-section.active { flex:1 1 0; cursor:default; }
-
-/* Background */
-.section-bg { position:absolute; inset:0; background-size:cover; background-position:center; filter:blur(8px); transform:scale(1.05); transition:transform 0.8s var(--transition-ease),filter 0.5s ease; }
-.accordion-section:hover:not(.active) .section-bg { transform:scale(1.1); filter:blur(2px); }
-.accordion-section.active .section-bg { filter:blur(1px); }
-
-/* Overlays */
-.section-overlay-collapsed { position:absolute; inset:0; background:rgba(60,36,21,0.6); transition:opacity var(--transition-speed) var(--transition-ease); z-index:1; }
-.accordion-section.active .section-overlay-collapsed { opacity:0; pointer-events:none; }
-.section-overlay-active { position:absolute; inset:0; background:var(--color-overlay-active); opacity:0; transition:opacity var(--transition-speed) var(--transition-ease); z-index:1; }
-.accordion-section.active .section-overlay-active { opacity:1; }
-
-/* Collapsed */
-.collapsed-content { position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 0.3s ease; }
-.accordion-section.active .collapsed-content { opacity:0; pointer-events:none; }
-.collapsed-icon { position:absolute; bottom:32px; left:50%; transform:translateX(-50%); width:40px; height:40px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.15); border-radius:10px; backdrop-filter:blur(4px); border:1px solid rgba(255,255,255,0.2); }
-.collapsed-icon svg { width:22px; height:22px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.collapsed-title { writing-mode:vertical-rl; text-orientation:mixed; transform:rotate(180deg); font-size:20px; font-weight:400; color:#fff; letter-spacing:1.5px; text-transform:capitalize; white-space:nowrap; text-shadow:0 1px 4px rgba(0,0,0,0.3); }
-.accordion-section:not(:last-child)::after { content:''; position:absolute; right:0; top:10%; bottom:10%; width:1px; background:rgba(255,255,255,0.15); z-index:3; transition:opacity var(--transition-speed) var(--transition-ease); }
-.accordion-section.active::after { opacity:0; }
-
-/* Expanded */
-.expanded-content { position:absolute; inset:0; z-index:2; padding:40px 48px; display:flex; flex-direction:column; opacity:0; transform:translateY(12px); transition:opacity 0.5s ease 0.2s,transform 0.5s ease 0.2s; overflow-y:auto; pointer-events:none; }
-.accordion-section.active .expanded-content { opacity:1; transform:translateY(0); pointer-events:auto; }
-.expanded-content::-webkit-scrollbar { width:6px; }
-.expanded-content::-webkit-scrollbar-track { background:transparent; }
-.expanded-content::-webkit-scrollbar-thumb { background:var(--color-gold-light); border-radius:3px; }
-
-/* Section header */
-.section-header { display:flex; align-items:center; gap:16px; margin-bottom:8px; }
-.section-icon { width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--color-gold),var(--color-gold-dark)); border-radius:14px; box-shadow:0 4px 14px rgba(197,165,90,0.3); }
-.section-icon svg { width:26px; height:26px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.section-title { font-size:26px; font-weight:700; color:var(--color-primary-brown); letter-spacing:-0.5px; }
-.section-subtitle { font-size:14px; font-weight:400; color:var(--color-text-light); margin-bottom:28px; }
-.section-divider { width:60px; height:3px; background:linear-gradient(90deg,var(--color-gold),transparent); border-radius:2px; margin-bottom:28px; }
-
-/* Cards */
-.cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; align-content:start; }
-.dashboard-card { position:relative; background:#fff; border:1px solid var(--color-border); border-radius:14px; padding:20px 20px 20px 24px; cursor:pointer !important; transition:all 0.3s ease; display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--color-body-text); overflow:hidden; }
-.dashboard-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--color-gold); border-radius:0 2px 2px 0; transform:scaleY(0); transition:transform 0.3s var(--transition-ease); }
-.dashboard-card:hover { transform:translateY(-3px); box-shadow:0 8px 30px var(--color-card-shadow); border-color:var(--color-gold-light); }
-.dashboard-card:hover::before { transform:scaleY(1); }
-.dashboard-card.no-link { opacity:0.45; cursor:not-allowed !important; }
-.card-icon { width:38px; height:38px; min-width:38px; display:flex; align-items:center; justify-content:center; background:var(--color-cream); border-radius:10px; transition:all 0.3s ease; }
-.dashboard-card:hover .card-icon { background:linear-gradient(135deg,var(--color-gold),var(--color-gold-dark)); }
-.card-icon svg { width:20px; height:20px; fill:none; stroke:var(--color-gold-dark); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:stroke 0.3s ease; }
-.dashboard-card:hover .card-icon svg { stroke:#fff; }
-.card-title { font-size:14px; font-weight:500; line-height:1.3; color:var(--color-body-text); }
-.card-arrow { margin-left:auto; opacity:0; transform:translateX(-6px); transition:all 0.3s ease; color:var(--color-gold); font-size:18px; }
-.dashboard-card:hover .card-arrow { opacity:1; transform:translateX(0); }
-.dashboard-card.hidden { display:none; }
-.dashboard-card.search-match { border-color:var(--color-gold); box-shadow:0 0 0 2px rgba(197,165,90,0.2); }
-.accordion-section.no-match .collapsed-content { opacity:0.35; }
-.accordion-section:not(.active):hover { flex-basis:140px; }
-.accordion-section:not(.active):hover .collapsed-icon { background:rgba(255,255,255,0.25); }
-
-/* Results count */
-.search-results-count { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(60px); background:var(--color-primary-brown); color:#fff; padding:10px 24px; border-radius:50px; font-size:13px; font-weight:500; z-index:200; opacity:0; transition:all 0.4s var(--transition-ease); pointer-events:none; box-shadow:0 8px 30px rgba(60,36,21,0.2); }
-.search-results-count.visible { opacity:1; transform:translateX(-50%) translateY(0); }
-
-/* Animations */
-@keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-.accordion-section.active .dashboard-card { animation:fadeInUp 0.4s ease forwards; }
-.accordion-section.active .dashboard-card:nth-child(1){animation-delay:0.05s}
-.accordion-section.active .dashboard-card:nth-child(2){animation-delay:0.08s}
-.accordion-section.active .dashboard-card:nth-child(3){animation-delay:0.11s}
-.accordion-section.active .dashboard-card:nth-child(4){animation-delay:0.14s}
-.accordion-section.active .dashboard-card:nth-child(5){animation-delay:0.17s}
-.accordion-section.active .dashboard-card:nth-child(6){animation-delay:0.20s}
-.accordion-section.active .dashboard-card:nth-child(7){animation-delay:0.23s}
-.accordion-section.active .dashboard-card:nth-child(8){animation-delay:0.26s}
-.accordion-section.active .dashboard-card:nth-child(9){animation-delay:0.29s}
-.accordion-section.active .dashboard-card:nth-child(10){animation-delay:0.32s}
-.accordion-section.active .dashboard-card:nth-child(11){animation-delay:0.35s}
-.accordion-section.active .dashboard-card:nth-child(12){animation-delay:0.38s}
-.accordion-section.active .dashboard-card:nth-child(13){animation-delay:0.41s}
-.accordion-section.active .dashboard-card:nth-child(14){animation-delay:0.44s}
-.accordion-section.active .dashboard-card:nth-child(15){animation-delay:0.47s}
-
-@media(max-width:768px){
-  .header{padding:0 16px}
-  .header-title{font-size:14px}
-  .header-title span{display:none}
-  .search-container{width:200px}
-  .accordion-container{flex-direction:column}
-  .accordion-section{flex:0 0 60px}
-  .accordion-section.active{flex:1 1 0}
-  .collapsed-content{flex-direction:row;gap:12px}
-  .collapsed-title{writing-mode:horizontal-tb;transform:none;font-size:12px}
-  .accordion-section:not(:last-child)::after{right:10%;left:10%;top:auto;bottom:0;width:auto;height:1px}
-  .expanded-content{padding:24px}
-  .cards-grid{grid-template-columns:1fr}
-  .section-title{font-size:20px}
-}
-</style>
 </head>
 <body>
 
@@ -169,194 +30,63 @@ html,body { height:100%; overflow:hidden; font-family:var(--font-family); backgr
 <div id="resultsCount" class="search-results-count"></div>
 
 <script>
-// ===== Read menu data from URL parameter =====
-function getMenuDataFromURL() {
+// Read MENU_DATA passed via URL parameter from Power BI DAX
+(function() {
   try {
     var params = new URLSearchParams(window.location.search);
     var raw = params.get('data');
-    if (raw) return JSON.parse(decodeURIComponent(raw));
-  } catch(e) {}
-  return null;
-}
-
-// ===== Render Menu =====
-function renderMenu(data) {
-  var container = document.getElementById('accordionContainer');
-  if (!container || !data || !data.length) return;
-  container.innerHTML = '';
-
-  var sections = [];
-  var sectionMap = {};
-
-  data.forEach(function(row) {
-    if (!sectionMap[row.SectionId]) {
-      sectionMap[row.SectionId] = {
-        id: row.SectionId,
-        title: row.SectionTitle,
-        subtitle: row.SectionSubtitle,
-        bgImage: row.SectionBgImage,
-        icon: row.SectionIconSVGPath,
-        dashboards: []
-      };
-      sections.push(sectionMap[row.SectionId]);
+    if (raw) {
+      window.MENU_DATA = JSON.parse(decodeURIComponent(raw));
     }
-    sectionMap[row.SectionId].dashboards.push({
-      title: row.DashboardTitle,
-      url: row.DashboardURL,
-      icon: row.DashboardIconSVGPath
-    });
-  });
-
-  var isFirst = true;
-  sections.forEach(function(sec) {
-    var sectionEl = document.createElement('div');
-    sectionEl.className = 'accordion-section' + (isFirst ? ' active' : '');
-    sectionEl.setAttribute('data-section', sec.id);
-
-    var cardsHtml = sec.dashboards.map(function(card) {
-      var hasLink = card.url && card.url.trim() !== '' && card.url.trim() !== '#';
-      return (
-        '<div class="dashboard-card' + (hasLink ? '' : ' no-link') + '" data-url="' + (hasLink ? card.url : '') + '">' +
-        '<div class="card-icon"><svg viewBox="0 0 24 24">' + card.icon + '</svg></div>' +
-        '<span class="card-title">' + card.title + '</span>' +
-        '<span class="card-arrow">›</span>' +
-        '</div>'
-      );
-    }).join('');
-
-    sectionEl.innerHTML =
-      '<div class="section-bg" style="background-image:url(\'' + sec.bgImage + '\')"></div>' +
-      '<div class="section-overlay-collapsed"></div>' +
-      '<div class="section-overlay-active"></div>' +
-      '<div class="collapsed-content">' +
-        '<div class="collapsed-icon"><svg viewBox="0 0 24 24">' + sec.icon + '</svg></div>' +
-        '<span class="collapsed-title">' + sec.title + '</span>' +
-      '</div>' +
-      '<div class="expanded-content">' +
-        '<div class="section-header">' +
-          '<div class="section-icon"><svg viewBox="0 0 24 24">' + sec.icon + '</svg></div>' +
-          '<h2 class="section-title">' + sec.title + '</h2>' +
-        '</div>' +
-        '<p class="section-subtitle">' + sec.subtitle + '</p>' +
-        '<div class="section-divider"></div>' +
-        '<div class="cards-grid">' + cardsHtml + '</div>' +
-      '</div>';
-
-    container.appendChild(sectionEl);
-    isFirst = false;
-  });
-}
-
-// ===== Bind card click — opens in new tab, single click =====
-function bindCardClicks() {
-  document.querySelectorAll('.dashboard-card:not([data-click-bound])').forEach(function(card) {
-    card.setAttribute('data-click-bound', '1');
-    var url = card.getAttribute('data-url');
-    if (!url) return;
-    card.addEventListener('click', function(e) {
-      e.stopPropagation();
-      window.open(url, '_blank');
-    });
-  });
-}
-
-// ===== Accordion =====
-function bindAccordion() {
-  var sections = document.querySelectorAll('.accordion-section');
-  var searchInput = document.getElementById('searchInput');
-  var searchClear = document.getElementById('searchClear');
-  var resultsCount = document.getElementById('resultsCount');
-  var searchTimeout = null;
-
-  function activateSection(target) {
-    sections.forEach(function(s) { s.classList.remove('active'); });
-    target.classList.add('active');
-    setTimeout(bindCardClicks, 50);
+  } catch(e) {
+    console.warn('Menu data parse error:', e);
   }
-
-  sections.forEach(function(section) {
-    section.addEventListener('click', function(e) {
-      if (section.classList.contains('active') && e.target.closest('.expanded-content')) return;
-      if (!section.classList.contains('active')) activateSection(section);
-    });
-  });
-
-  // Search
-  searchInput.addEventListener('input', function() {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(handleSearch, 150);
-  });
-  searchInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') { searchInput.value = ''; handleSearch(); searchInput.blur(); }
-  });
-  searchClear.addEventListener('click', function() {
-    searchInput.value = ''; handleSearch(); searchInput.focus();
-  });
-
-  function handleSearch() {
-    var query = searchInput.value.trim().toLowerCase();
-    searchClear.classList.toggle('visible', query.length > 0);
-    if (!query) { resetSearch(); return; }
-    var total = 0;
-    var firstMatch = null;
-    sections.forEach(function(section) {
-      var cards = section.querySelectorAll('.dashboard-card');
-      var hasMatch = false;
-      cards.forEach(function(card) {
-        var title = card.querySelector('.card-title').textContent.toLowerCase();
-        if (title.includes(query)) {
-          card.classList.remove('hidden'); card.classList.add('search-match');
-          hasMatch = true; total++;
-        } else {
-          card.classList.add('hidden'); card.classList.remove('search-match');
-        }
-      });
-      if (hasMatch) { section.classList.remove('no-match'); if (!firstMatch) firstMatch = section; }
-      else section.classList.add('no-match');
-    });
-    if (firstMatch && !firstMatch.classList.contains('active')) activateSection(firstMatch);
-    resultsCount.textContent = total === 0 ? 'No dashboards found for "' + query + '"' : total + ' dashboard' + (total !== 1 ? 's' : '') + ' found';
-    resultsCount.classList.add('visible');
-  }
-
-  function resetSearch() {
-    sections.forEach(function(s) {
-      s.classList.remove('no-match');
-      s.querySelectorAll('.dashboard-card').forEach(function(c) { c.classList.remove('hidden','search-match'); });
-    });
-    resultsCount.classList.remove('visible');
-  }
-
-  // Keyboard
-  document.addEventListener('keydown', function(e) {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); }
-    if (document.activeElement !== searchInput) {
-      var active = document.querySelector('.accordion-section.active');
-      var idx = Array.from(sections).indexOf(active);
-      if (e.key === 'ArrowRight' && idx < sections.length - 1) activateSection(sections[idx + 1]);
-      else if (e.key === 'ArrowLeft' && idx > 0) activateSection(sections[idx - 1]);
-    }
-  });
-}
-
-// ===== Init =====
-function init() {
-  var data = getMenuDataFromURL();
-  if (data && data.length) {
-    renderMenu(data);
-    bindAccordion();
-    bindCardClicks();
-  } else {
-    document.getElementById('accordionContainer').innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:center;width:100%;color:#8B7A6B;font-size:15px;padding:40px;">No menu data received. Please check your Power BI DAX measure.</div>';
-  }
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+})();
 </script>
+
+<!-- EXACT ORIGINAL SCRIPT.JS — unchanged -->
+<script src="https://cdn.jsdelivr.net/gh/bhavinks84/PBIMenu@main/script.js"></script>
+
+<script>
+// Single click fix — works because this page is on GitHub Pages, NOT inside PBI sandbox
+(function () {
+
+  function patchCards() {
+    document.querySelectorAll('.dashboard-card:not([data-patched])').forEach(function(card) {
+      card.setAttribute('data-patched', '1');
+      var url = (card.getAttribute('href') || '').trim();
+
+      if (!url || url === '#') {
+        card.style.opacity = '0.5';
+        card.style.cursor = 'not-allowed';
+        card.removeAttribute('href');
+        return;
+      }
+
+      card.setAttribute('href', url);
+      card.setAttribute('target', '_blank');
+      card.setAttribute('rel', 'noopener noreferrer');
+
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open(url, '_blank');
+      });
+    });
+  }
+
+  var attempts = 0;
+  var timer = setInterval(function() {
+    patchCards();
+    if (++attempts >= 50) clearInterval(timer);
+  }, 100);
+
+  document.addEventListener('click', function() {
+    setTimeout(patchCards, 300);
+  }, true);
+
+})();
+</script>
+
 </body>
 </html>
